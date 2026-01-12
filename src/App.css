@@ -1,0 +1,159 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.revoke-reason {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  resize: vertical;
+  margin: 15px 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.modal-actions .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.modal-actions .confirm {
+  background: #e74c3c;
+  color: white;
+}
+
+.modal-actions .confirm:hover:not(:disabled) {
+  background: #c0392b;
+}
+
+.modal-actions .cancel {
+  background: #95a5a6;
+  color: white;
+}
+
+.modal-actions .cancel:hover:not(:disabled) {
+  background: #7f8c8d;
+}
+
+.modal-actions .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Certificate Actions */
+.cert-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cert-actions .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.view-cert {
+  background: #3498db;
+  color: white;
+}
+
+.view-cert:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+.revoke-cert {
+  background: #e74c3c;
+  color: white;
+}
+
+.revoke-cert:hover:not(:disabled) {
+  background: #c0392b;
+}
+
+.view-cert:disabled,
+.revoke-cert:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
