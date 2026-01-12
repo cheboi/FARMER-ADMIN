@@ -13,7 +13,7 @@ import {
 } from "react-icons/fi";
 import { MdDashboard } from "react-icons/md";
 import StatsChart from "../components/StatsChart";
-import api from "../api/axios";
+import api from "../api/axios.js";
 import "./dashboard.css";
 
 export default function Dashboard() {

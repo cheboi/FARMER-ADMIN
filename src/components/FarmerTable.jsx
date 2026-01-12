@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import api from "../api/axios.js";
 
 export default function FarmerTable({ farmers, refresh }) {
   const [updatingId, setUpdatingId] = useState(null);

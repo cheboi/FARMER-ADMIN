@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import api from "../api/axios.js";
 import { FiCheckCircle, FiFileText, FiAlertTriangle } from "react-icons/fi";
 
 export default function FarmerDetail() {
