@@ -18,9 +18,8 @@ import "./dashboard.css";
 
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
-
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [farmers, setFarmers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedFarmer, setSelectedFarmer] = useState(null);

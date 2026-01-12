@@ -12,9 +12,8 @@ import {
 import { GiPlantSeed, GiWheat, GiCow } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
-
 export default function FarmerDashboard() {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
 
   useEffect(() => {
