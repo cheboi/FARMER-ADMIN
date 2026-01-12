@@ -10,6 +10,9 @@ import {
   FiAlertTriangle,
 } from "react-icons/fi";
 import { GiPlantSeed, GiWheat, GiCow } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
 
 export default function FarmerDashboard() {
   const [data, setData] = useState(null);
@@ -53,7 +56,7 @@ export default function FarmerDashboard() {
 
   function logout() {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    navigate("/login", { replace: true });
   }
 
   if (!data) return <p style={{ padding: 24 }}>Loading dashboard...</p>;

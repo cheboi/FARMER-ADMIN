@@ -16,6 +16,10 @@ import StatsChart from "../components/StatsChart";
 import api from "../api/axios.js";
 import "./dashboard.css";
 
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
+
 export default function Dashboard() {
   const [farmers, setFarmers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,15 +54,11 @@ export default function Dashboard() {
           <MdDashboard /> Ukulima Sahi Certification Dashboard
         </div>
 
-        <div className="admin-info">
-          <FiUser /> Admin
-        </div>
-
         <button
           className="logout-btn"
           onClick={() => {
             localStorage.removeItem("token");
-            window.location.href = "/login";
+            navigate("/login", { replace: true });
           }}
         >
           <FiLogOut /> Logout
