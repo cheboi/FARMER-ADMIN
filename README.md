@@ -6,7 +6,7 @@ Admins can review applications, approve or reject farmers, and generate
 certification documents.
 
 ## Live Site
-https://ukulima-admin.vercel.app
+https://farmer-admin-rf1y.vercel.app/
 
 ## Features
 - Admin login
