@@ -55,7 +55,7 @@ export default function FarmerDashboard() {
 
   function logout() {
     localStorage.removeItem("token");
-    navigate("/login", { replace: true });
+    setToken(null);
   }
 
   if (!data) return <p style={{ padding: 24 }}>Loading dashboard...</p>;
