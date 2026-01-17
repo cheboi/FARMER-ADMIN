@@ -5,7 +5,6 @@ import {
   FiClock,
   FiCheckCircle,
   FiXCircle,
-  FiUser,
   FiFileText,
   FiEye,
   FiCheck,
@@ -26,19 +25,47 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const fetchFarmers = async () => {
+      try {
+        setLoading(true);
+        const res = await api.get("/farmers");
+        if (isMounted) {
+          setFarmers(res.data || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch farmers:", err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
     fetchFarmers();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  async function fetchFarmers() {
-    setLoading(true);
-    const res = await api.get("/farmers");
-    setFarmers(res.data);
-    setLoading(false);
-  }
+  // useEffect(() => {
+  //   fetchFarmers();
+  // }, []);
+
+  // async function fetchFarmers() {
+  //   setLoading(true);
+  //   const res = await api.get("/farmers");
+  //   setFarmers(res.data);
+  //   setLoading(false);
+  // }
 
   async function updateStatus(id, status) {
-    await api.patch(`/farmers/${id}/status`, { status });
-    fetchFarmers();
+    try {
+      await api.patch(`/farmers/${id}/status`, { status });
+      await fetchFarmers();
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    }
   }
 
   const pending = farmers.filter((f) => f.status === "pending");
@@ -101,6 +128,7 @@ export default function Dashboard() {
                   <th>Name</th>
                   <th>Farm Type</th>
                   <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -179,9 +207,7 @@ export default function Dashboard() {
                   <td className="actions">
                     <button
                       className="btn view"
-                      onClick={() =>
-                        (window.location.href = `/dashboard/farmers/${f.id}`)
-                      }
+                      onClick={() => navigate(`/dashboard/farmers/${f.id}`)}
                     >
                       <FiFileText /> View Certificate
                     </button>
@@ -217,14 +243,16 @@ export default function Dashboard() {
 
             <p>
               <strong>Status:</strong>{" "}
-              <span className="status pending">Pending</span>
+              <span className={`status ${selectedFarmer.status}`}>
+                {selectedFarmer.status}
+              </span>
             </p>
 
             <div className="modal-actions">
               <button
                 className="btn approve"
-                onClick={() => {
-                  updateStatus(selectedFarmer.id, "certified");
+                onClick={async () => {
+                  await updateStatus(selectedFarmer.id, "certified");
                   setShowModal(false);
                 }}
               >
