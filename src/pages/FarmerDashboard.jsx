@@ -17,63 +17,45 @@ export default function FarmerDashboard() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    api
-      .get("/farmers/me")
-      .then((res) => setData(res.data))
-      .catch(() => logout());
-  }, []);
+    let mounted = true;
 
-  async function getMyStatus(req, res) {
-    try {
-      const userId = req.user.id;
+    const fetchStatus = async () => {
+      try {
+        const res = await api.get("/farmers/me");
+        if (mounted) setData(res.data);
+      } catch (err) {
+        console.error("Failed to fetch farmer data:", err);
 
-      const result = await pool.query(
-        `SELECT
-        first_name,
-        last_name,
-        farm_size,
-        crop_type,
-        livestock_type,
-        status,
-        revoke_reason,
-        revoked_at
-      FROM farmers
-      WHERE user_id = $1`,
-        [userId]
-      );
-
-      if (result.rows.length === 0) {
-        return res.status(404).json({ message: "Farmer profile not found" });
+        if (err.response?.status === 401) {
+          logout();
+        }
       }
+    };
+    fetchStatus();
 
-      res.json(result.rows[0]);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Server error" });
-    }
-  }
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   function logout() {
     localStorage.removeItem("token");
-    setToken(null);
+    navigate("/login", { replace: true });
   }
 
   if (!data) return <p style={{ padding: 24 }}>Loading dashboard...</p>;
 
   return (
     <div className="farmer-card">
-      {/* HEADER */}
       <div className="farmer-header">
         <h2>
-          <GiPlantSeed /> Ukulima Sahi – Farmer Dashboard
+          <GiPlantSeed /> Ukulima Sahi Certification Dashboard
         </h2>
-
         <button className="logout-btn" onClick={logout}>
           <FiLogOut /> Logout
         </button>
       </div>
 
-      {/* DETAILS */}
       <p>
         <FiUser /> <strong>Name:</strong> {data.first_name} {data.last_name}
       </p>
@@ -97,36 +79,20 @@ export default function FarmerDashboard() {
       <p>
         <strong>Status:</strong>{" "}
         <span className={`status ${data.status}`}>
-          {data.status === "pending" && (
-            <>
-              <FiClock /> Pending
-            </>
-          )}
-          {data.status === "certified" && (
-            <>
-              <FiCheckCircle /> Certified
-            </>
-          )}
-          {data.status === "revoked" && (
-            <>
-              <FiAlertTriangle /> Revoked
-            </>
-          )}
+          {data.status === "pending" && <FiClock />}
+          {data.status === "certified" && <FiCheckCircle />}
+          {data.status === "revoked" && <FiAlertTriangle />}
+          {data.status}
         </span>
       </p>
 
-      {/* CERTIFICATION MESSAGE */}
       {data.status === "revoked" && (
         <div className="certificate error">
           <FiAlertTriangle size={20} />
           <h3>Certification Revoked</h3>
-          <p>Your certification has been revoked.</p>
-
-          {data.revoke_reason && (
-            <p>
-              <strong>Reason:</strong> {data.revoke_reason}
-            </p>
-          )}
+          <p>
+            <strong>Reason:</strong> {data.revoke_reason}
+          </p>
         </div>
       )}
     </div>
