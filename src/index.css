@@ -220,6 +220,10 @@ p svg {
   background: #f8d7da;
   color: #721c24;
 }
+.status .revoked {
+  background: #ffe5e5;
+  color: #c0392b;
+}
 
 .certificate {
   margin-top: 16px;

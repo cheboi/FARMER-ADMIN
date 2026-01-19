@@ -9,6 +9,7 @@ import {
   FiEye,
   FiCheck,
   FiX,
+  FiAlertTriangle,
 } from "react-icons/fi";
 import { MdDashboard } from "react-icons/md";
 import StatsChart from "../components/StatsChart";
@@ -48,17 +49,6 @@ export default function Dashboard() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   fetchFarmers();
-  // }, []);
-
-  // async function fetchFarmers() {
-  //   setLoading(true);
-  //   const res = await api.get("/farmers");
-  //   setFarmers(res.data);
-  //   setLoading(false);
-  // }
-
   async function updateStatus(id, status) {
     try {
       await api.patch(`/farmers/${id}/status`, { status });
@@ -71,6 +61,7 @@ export default function Dashboard() {
   const pending = farmers.filter((f) => f.status === "pending");
   const certified = farmers.filter((f) => f.status === "certified");
   const declined = farmers.filter((f) => f.status === "declined");
+  const revoked = farmers.filter((f) => f.status === "revoked");
 
   return (
     <div className="dashboard-page">
@@ -112,6 +103,12 @@ export default function Dashboard() {
           title="Rejected Applications"
           value={declined.length}
           icon={<FiXCircle />}
+          red
+        />
+        <StatCard
+          title="Revoked Certifications"
+          value={revoked.length}
+          icon={<FiAlertTriangle />}
           red
         />
       </div>
@@ -217,6 +214,44 @@ export default function Dashboard() {
           </tbody>
         </table>
       </div>
+      <div className="card">
+        <h3>Revoked Certificates</h3>
+
+        {revoked.length === 0 ? (
+          <p>No revoked certificates</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Farm Type</th>
+                <th>Reason</th>
+                <th>Revoked At</th>
+                <th>Revoked By</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {revoked.map((f) => (
+                <tr key={f.id}>
+                  <td>
+                    {f.first_name} {f.last_name}
+                  </td>
+                  <td>{f.crop_type || f.livestock_type}</td>
+                  <td>{f.revoke_reason || "—"}</td>
+                  <td>
+                    {f.revoked_at
+                      ? new Date(f.revoked_at).toLocaleDateString()
+                      : "—"}
+                  </td>
+                  <td>{f.revoked_by}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
       {showModal && selectedFarmer && (
         <div className="modal-overlay">
           <div className="modal-content">
